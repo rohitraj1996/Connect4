@@ -15,15 +15,15 @@
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="214.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="195.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="375.0" minHeight="10.0" prefHeight="374.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="195.0" minHeight="10.0" prefHeight="27.0" vgrow="NEVER" />
+        <RowConstraints maxHeight="385.0" minHeight="10.0" prefHeight="373.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" />
-      <Pane fx:id="insertedDiscsPane" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #2B3B4C;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <Pane prefHeight="44.0" prefWidth="600.0" GridPane.columnSpan="2" />
+      <Pane fx:id="insertedDiscsPane" prefHeight="367.0" prefWidth="386.0" GridPane.rowIndex="1" />
+      <VBox prefHeight="218.0" prefWidth="214.0" style="-fx-background-color: #2B3B4C;" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+            <Region prefHeight="156.0" prefWidth="214.0" VBox.vgrow="ALWAYS" />
             <Label fx:id="playerNameLabel" alignment="CENTER" prefHeight="43.0" prefWidth="305.0" text="Player One" textFill="#fcfcfc">
                <font>
                   <Font name="System Bold" size="29.0" />
