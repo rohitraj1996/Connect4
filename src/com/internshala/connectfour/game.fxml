@@ -9,19 +9,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="rootGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #D9F7F0;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.internshala.connectfour.Controller">
+<GridPane fx:id="rootGridPane" style="-fx-background-color: #D9F7F0;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.internshala.connectfour.Controller">
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="386.0" minWidth="10.0" prefWidth="386.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="214.0" />
+        <ColumnConstraints />
+        <ColumnConstraints />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="195.0" minHeight="10.0" prefHeight="27.0" vgrow="NEVER" />
-        <RowConstraints maxHeight="385.0" minHeight="10.0" prefHeight="373.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+        <RowConstraints />
     </rowConstraints>
     <children>
-        <Pane prefHeight="44.0" prefWidth="600.0" GridPane.columnSpan="2" />
-      <Pane fx:id="insertedDiscsPane" prefHeight="367.0" prefWidth="386.0" GridPane.rowIndex="1" />
-      <VBox prefHeight="218.0" prefWidth="214.0" style="-fx-background-color: #2B3B4C;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <Pane GridPane.columnSpan="2" />
+      <Pane fx:id="insertedDiscsPane" prefHeight="400.0" prefWidth="200.0" GridPane.rowIndex="1" />
+      <VBox style="-fx-background-color: #2B3B4C;" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <children>
             <Region prefHeight="156.0" prefWidth="214.0" VBox.vgrow="ALWAYS" />
             <Label fx:id="playerNameLabel" alignment="CENTER" prefHeight="43.0" prefWidth="305.0" text="Player One" textFill="#fcfcfc">

@@ -21,6 +21,7 @@ public class Main extends Application {
         GridPane rootGridPane = loader.load();
 
         controller = loader.getController();
+        controller.createPlayground();
 
         MenuBar menuBar = createMenu();
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
