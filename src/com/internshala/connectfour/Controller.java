@@ -1,5 +1,6 @@
 package com.internshala.connectfour;
 
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -9,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.util.Duration;
 import sun.security.provider.SHA;
 
 import java.net.URL;
@@ -24,10 +26,12 @@ public class Controller implements Initializable{
     private static final String DISC_COLOR1 = "#24303E";
     private static final String DISC_COLOR2 = "#4CAA88";
 
-    private static String playerOne = "Player One";
-    private static String playerTwo = "Player Two";
+    private static final String PLAYER_ONE = "Player One";
+    private static final String PLAYER_TWO = "Player Two";
 
     private boolean isPlayerOneTurn = true;
+
+    private Disc[][] insertedDiscsArray = new Disc[ROWS][COLUMNS];  //For structural changes. For developers only.
 
     @FXML
     public GridPane rootGridPane;
@@ -93,8 +97,43 @@ public class Controller implements Initializable{
         return rectangleList;
     }
 
-    private static void insertDisc(Disc disc, int column){
+    private void insertDisc(Disc disc, int column){
 
+        int row = ROWS - 1;
+        while (row > 0){
+
+            if (insertedDiscsArray[row][column] == null){
+                break;
+            }
+            row--;
+        }
+
+        if(row < 0){
+            return;
+        }
+
+        insertedDiscsArray[row][column] = disc;       // For Structural changes: For Developers.
+        insertedDiscsPane.getChildren().add(disc);
+
+        disc.setTranslateX(column * (CIRCLE_DIAMETER + 5 ) + CIRCLE_DIAMETER / 4);
+
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.5), disc);
+        translateTransition.setToY(row * (CIRCLE_DIAMETER + 5) + CIRCLE_DIAMETER / 4);
+
+        int currentRow = row;
+        translateTransition.setOnFinished(event -> {
+
+            if (gameEnded(currentRow, column)){
+                //TODO.
+            }
+            isPlayerOneTurn = !isPlayerOneTurn;
+            playerNameLabel.setText(isPlayerOneTurn? PLAYER_ONE : PLAYER_TWO);
+        });
+        translateTransition.play();
+    }
+
+    private boolean gameEnded(int row, int column){
+        return true;
     }
 
     private static class Disc extends Circle{
