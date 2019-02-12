@@ -1,9 +1,12 @@
 package com.internshala.connectfour;
 
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -17,6 +20,7 @@ import sun.security.provider.SHA;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -199,6 +203,42 @@ public class Controller implements Initializable {
     private void gameOver() {
         String winner = isPlayerOneTurn ? PLAYER_ONE : PLAYER_TWO;
         System.out.println("Winner is: " + winner);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Connect Four");
+        alert.setHeaderText("The winner is " + winner);
+        alert.setContentText("Want to play again? ");
+
+        ButtonType yesBtn = new ButtonType("Yes");
+        ButtonType noBtn = new ButtonType("No, Exit");
+        alert.getButtonTypes().setAll(yesBtn, noBtn);
+
+        Platform.runLater(() -> {
+
+            Optional<ButtonType> btnClicked = alert.showAndWait();
+            if (btnClicked.isPresent() && btnClicked.get() == yesBtn) {
+                resetGame();
+            } else {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
+    }
+
+    private void resetGame() {
+
+        insertedDiscsPane.getChildren().clear();  //Remove all inserted disc from pane.
+
+        for (int row = 0; row < ROWS; row++) {              // Structurally, make all elements of insertedDiscsArray[][] to null.
+            for (int col = 0; col < COLUMNS; col++) {
+                insertedDiscsArray[row][col] = null;
+            }
+        }
+
+        isPlayerOneTurn = true;                 // Let player 1 start the game.
+        playerNameLabel.setText(PLAYER_ONE);
+
+        createPlayground();              //Prepare the fresh playground.
     }
 
     private static class Disc extends Circle {
