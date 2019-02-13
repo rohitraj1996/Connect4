@@ -15,7 +15,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.util.Duration;
-import sun.security.provider.SHA;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -37,6 +36,8 @@ public class Controller implements Initializable {
     private static final String PLAYER_TWO = "Player Two";
 
     private boolean isPlayerOneTurn = true;
+
+    private boolean isAllowedToInsert = true; //Flag to avoid same color disc being added.
 
     private Disc[][] insertedDiscsArray = new Disc[ROWS][COLUMNS];  //For structural changes. For developers only.
 
@@ -71,6 +72,7 @@ public class Controller implements Initializable {
                 circle.setRadius(CIRCLE_DIAMETER / 2.0);
                 circle.setCenterX(CIRCLE_DIAMETER / 2.0);
                 circle.setCenterY(CIRCLE_DIAMETER / 2.0);
+                circle.setSmooth(true);
 
                 circle.setTranslateX(col * (CIRCLE_DIAMETER + 5) + CIRCLE_DIAMETER / 4);
                 circle.setTranslateY(row * (CIRCLE_DIAMETER + 5) + CIRCLE_DIAMETER / 4);
@@ -95,8 +97,13 @@ public class Controller implements Initializable {
             rectangle.setOnMouseExited(event -> rectangle.setFill(Color.TRANSPARENT));
 
             final int column = col;
+
             rectangle.setOnMouseClicked(event -> {
-                insertDisc(new Disc(isPlayerOneTurn), column);
+
+                if(isAllowedToInsert && insertedDiscsArray[0][column] == null){
+                    isAllowedToInsert = false;           //When disc is being dropped then no more disc will be inserted.
+                    insertDisc(new Disc(isPlayerOneTurn), column);
+                }
             });
             rectangleList.add(rectangle);
         }
@@ -130,10 +137,11 @@ public class Controller implements Initializable {
         int currentRow = row;
         translateTransition.setOnFinished(event -> {
 
+            isAllowedToInsert = true;                 // Finally, when disc is dropped, allow next player to insert disc.
             if (gameEnded(currentRow, column)) {
                 gameOver();
-                return;
             }
+
             isPlayerOneTurn = !isPlayerOneTurn;
             playerNameLabel.setText(isPlayerOneTurn ? PLAYER_ONE : PLAYER_TWO);
         });
@@ -225,7 +233,7 @@ public class Controller implements Initializable {
         });
     }
 
-    private void resetGame() {
+    public void resetGame() {
 
         insertedDiscsPane.getChildren().clear();  //Remove all inserted disc from pane.
 

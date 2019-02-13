@@ -12,7 +12,7 @@
 <GridPane fx:id="rootGridPane" style="-fx-background-color: #D9F7F0;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.internshala.connectfour.Controller">
     <columnConstraints>
         <ColumnConstraints />
-        <ColumnConstraints />
+        <ColumnConstraints maxWidth="299.0" minWidth="225.0" prefWidth="225.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints minHeight="10.0" prefHeight="30.0" />
