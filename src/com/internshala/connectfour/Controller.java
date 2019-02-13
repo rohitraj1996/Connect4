@@ -5,9 +5,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -32,12 +31,14 @@ public class Controller implements Initializable {
     private static final String DISC_COLOR1 = "#24303E";
     private static final String DISC_COLOR2 = "#4CAA88";
 
-    private static final String PLAYER_ONE = "Player One";
-    private static final String PLAYER_TWO = "Player Two";
+    private static String PLAYER_ONE = "Player One";
+    private static String PLAYER_TWO = "Player Two";
 
     private boolean isPlayerOneTurn = true;
 
     private boolean isAllowedToInsert = true; //Flag to avoid same color disc being added.
+
+    private boolean isPlayerNameSet = false;
 
     private Disc[][] insertedDiscsArray = new Disc[ROWS][COLUMNS];  //For structural changes. For developers only.
 
@@ -50,7 +51,17 @@ public class Controller implements Initializable {
     @FXML
     public Label playerNameLabel;
 
+    @FXML
+    public TextField playerOneTextField, playerTwoTextField;
+
+    @FXML
+    public Button setNamesButton;
+
     public void createPlayground() {
+
+        playerOneTextField.setDisable(false);
+        playerTwoTextField.setDisable(false);
+        setNamesButton.setDisable(false);
 
         Shape rectangleWithHoles = createGameStructuralGrid();
         rootGridPane.add(rectangleWithHoles, 0, 1);
@@ -60,6 +71,30 @@ public class Controller implements Initializable {
         for (Rectangle rectangle : rectangleList) {
             rootGridPane.add(rectangle, 0, 1);
         }
+
+        setNamesButton.setOnAction(event -> {
+
+            PLAYER_ONE = playerOneTextField.getText();
+            PLAYER_TWO = playerTwoTextField.getText();
+
+            setPlayerName(PLAYER_ONE, PLAYER_TWO);
+        });
+    }
+
+    private void setPlayerName(String playerOne, String playerTwo) {   //Sets the players name.
+
+        if (!isPlayerNameSet) {
+            playerOneTextField.setText(playerOne);
+            playerTwoTextField.setText(playerTwo);
+
+        }
+
+        playerNameLabel.setText(playerOne);
+        playerOneTextField.setDisable(true);
+        playerTwoTextField.setDisable(true);
+        setNamesButton.setDisable(true);
+
+        isPlayerNameSet = true;
     }
 
     private Shape createGameStructuralGrid() {
@@ -100,6 +135,11 @@ public class Controller implements Initializable {
 
             rectangle.setOnMouseClicked(event -> {
 
+                if (!isPlayerNameSet){
+                    alertWhenPlayerNameNotSet();
+                    return;
+                }
+
                 if(isAllowedToInsert && insertedDiscsArray[0][column] == null){
                     isAllowedToInsert = false;           //When disc is being dropped then no more disc will be inserted.
                     insertDisc(new Disc(isPlayerOneTurn), column);
@@ -109,6 +149,24 @@ public class Controller implements Initializable {
         }
 
         return rectangleList;
+    }
+
+    private void alertWhenPlayerNameNotSet() {          //It gives the alert when player starts the game without setting the name.
+
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("WARNING");
+        alert.setHeaderText("Player Name Not Set");
+        alert.setContentText("Player Name will be set to default. " + "Click Yes to continue ");
+
+        ButtonType yesBtn = new ButtonType("YES");
+        ButtonType noBtn = new ButtonType("NO");
+
+        alert.getButtonTypes().setAll(yesBtn, noBtn);
+
+        Optional<ButtonType> buttonClicked = alert.showAndWait();
+        if (buttonClicked.isPresent() && buttonClicked.get() == yesBtn){
+            setPlayerName(PLAYER_ONE, PLAYER_TWO);
+        }
     }
 
     private void insertDisc(Disc disc, int column) {
@@ -244,7 +302,14 @@ public class Controller implements Initializable {
         }
 
         isPlayerOneTurn = true;                 // Let player 1 start the game.
+
+        PLAYER_ONE = "Player One";
+        PLAYER_TWO = "Player Two";
         playerNameLabel.setText(PLAYER_ONE);
+        isPlayerNameSet = false;
+
+        playerOneTextField.clear();
+        playerTwoTextField.clear();
 
         createPlayground();              //Prepare the fresh playground.
     }
